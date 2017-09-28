@@ -1,0 +1,9 @@
+#teamid,teamname
+INSERT INTO Team(teamid, teamname) VALUES (1,'Quo Lux');
+INSERT INTO Team(teamid, teamname) VALUES (2,'Trippledex');
+INSERT INTO Team(teamid, teamname) VALUES (3,'Rank');
+INSERT INTO Team(teamid, teamname) VALUES (4,'Viva');
+INSERT INTO Team(teamid, teamname) VALUES (5,'Konklux');
+INSERT INTO Team(teamid, teamname) VALUES (6,'Prodder');
+INSERT INTO Team(teamid, teamname) VALUES (7,'Opela');
+INSERT INTO Team(teamid, teamname) VALUES (8,'Lotlux');
