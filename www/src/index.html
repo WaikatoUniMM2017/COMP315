@@ -3,16 +3,44 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>WUGS Tournament Creation page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="manifest" href="site.webmanifest">
-        <link rel="apple-touch-icon" href="icon.png">
+        <link rel="apple-touch-icon" href="WUGS.png">
         <!-- Place favicon.ico in the root directory -->
-
+		
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
- 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+ 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+ 		datetime-local-polyfille.min.js	
+ 		function check() {
+    document.getElementById("ms1).checked = true;
+	}
+	function uncheck() {
+	    document.getElementById("ms1").checked = false;
+	}
+	document.getElementById("ms2").checked = true;
+	}
+	function uncheck() {
+	    document.getElementById("ms2").checked = false;
+	}
+	document.getElementById("ms3").checked = true;
+	}
+	function uncheck() {
+	    document.getElementById("ms3").checked = false;
+	}
+	document.getElementById("ms4").checked = true;
+	}
+	function uncheck() {
+	    document.getElementById("ms4").checked = false;
+	}
+	document.getElementById("ms5").checked = true;
+	}
+	function uncheck() {
+	    document.getElementById("ms5").checked = false;
+	}
+ 		</script>
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
@@ -26,7 +54,7 @@
     <div id="menu">
         <div class="pure-menu">
             <a class="pure-menu-heading" href="#">WUGS</a>
-            <img src="src/WUGS.png" alt="WUGSLogo" style="width:128px;height:128px;">
+            <img src="WUGS.png" alt="WUGSLogo" style="width:150px;height:128px;">
 
             <ul class="pure-menu-list">
                 <li class="pure-menu-item"><a href="#" class="pure-menu-link">Add Players</a></li>
@@ -50,15 +78,15 @@
         <div class="content">
             <h2 class="content-subhead">Add Players</h2>
             <form>
-				<input type="email" placeholder="E-mail address"> <br />
-				<input type="text" placeholder= "Full Name"> <br />
+				*E-mail address <input type="email" required/>  <br />
+				*Full Name<input type="text" required <br />
 			        <fieldset>
 			                <legend>Membership status</legend>
-	                        <input type="checkbox" name="MStatus" value="Gold" />Gold <br />
-	                        <input type="checkbox" name="MStatus" value="Silver" />Silver<br />
-	                        <input type="checkbox" name="MStatus" value="Bronze" />Bronze<br />
-	                        <input type="checkbox" name="MStatus" value="Free" />Free<br />
-	                        <input type="checkbox" name="MStatus" value="Non-Member" />Non-Member</> <br />
+	                        <input type="radio" id ="ms1" name="MStatus1" value="Gold" />Gold <br />
+	                        <input type="radio" id ="ms2" name="MStatus2" value="Silver" />Silver<br />
+	                        <input type="radio" id ="ms3" name="MStatus3" value="Bronze" />Bronze<br />
+	                        <input type="radio" id ="ms4" name="MStatus4" value="Free" />Free<br />
+	                        <input type="radio" id ="ms5" name="MStatus5" value="Non-Member" />Non-Member</> <br />
 			        </fieldset>
 		        <input type="search" placeholder="Team">	<br />		
 				<input type="submit" value="Add"> <br />
@@ -74,8 +102,8 @@
 		            <form>
 						<input type="text" placeholder="Game title"> <br />
 						<fieldset>
-							<input type="datetime" placeholder= "Date and Time : from">	<br />
-							<input type="datetime" placeholder= "Date and Time : to"> <br />	
+							<input type="datetime-local" placeholder= "Date and Time : from">	<br />
+							<input type="datetime-local" placeholder= "Date and Time : to"> <br />	
 					    </fieldset>	
 					    <input type="text" placeholder="Venue">	<br />
 					    <textarea name="comment" form="usrform">Enter comment here...</textarea> <br />
