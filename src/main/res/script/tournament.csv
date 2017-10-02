@@ -1,3 +1,0 @@
-#tournamenttid,tournamentname,starttime,endtime,venue,comment
-INSERT INTO Tournament(ttournamenttid,tournamentname,starttime,endtime,venue,comment) VALUES (1,'overwatchsummer',20170512 09:00:00,20170514 21:00:00,"'144, Keith Street, Hamilton'","'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan neque ut metus interdum efficitur. '");
-INSERT INTO Tournament(ttournamenttid,tournamentname,starttime,endtime,venue,comment) VALUES (2,'heroofstormwinter',20170822 10:00:00,20170825 20:00:00,"'82, Otacu Street, Hamilton'",'Praesent efficitur velit a sem luctus volutpat. Ut vel tortor quis sem blandit faucibus. Nullam quis dapibus purus.');

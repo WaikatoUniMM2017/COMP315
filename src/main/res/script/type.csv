@@ -1,7 +1,0 @@
-#typeid,typename
-INSERT INTO Type(typeid,typename) VALUES (1,'gold');
-INSERT INTO Type(typeid,typename) VALUES (2,'silver');
-INSERT INTO Type(typeid,typename) VALUES (3,'bronze');
-INSERT INTO Type(typeid,typename) VALUES (4,'free');
-INSERT INTO Type(typeid,typename) VALUES (5,'nonmember');
-INSERT INTO Type(typeid,typename) VALUES (6,'staff');
