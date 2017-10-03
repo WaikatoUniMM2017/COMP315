@@ -46,26 +46,44 @@ public class Main{
 
                                 String aa = exchange.getQueryString();
 
-                                int index = aa.lastIndexOf("/");
-                                String type = aa.substring(index, aa.length());
 
-                                switch (type) {
-                                    case "": {
-                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
-                                        String output = "";
-                                        output = readFile("C:/Users/17255/Documents/GitHub/COMP315/index.html", Charset.defaultCharset());
-                                        exchange.getResponseSender().send(output);
-                                    }
-                                    case "File": {
-                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/JSON");
-                                        String output = "";
-                                        output = readFile("somefile", Charset.defaultCharset());
-                                        exchange.getResponseSender().send(output);
-                                    }
-                                    case "Api": {
-//                                        some method to fetch data...
-                                    }
-                                 }
+                                if (aa == "") {
+                                    //Return index.html
+                                    exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
+                                    String output = "";
+                                    //Needs to be a relative path
+                                    output = readFile("/index.html", Charset.defaultCharset());
+                                    exchange.getResponseSender().send(output);
+                                } else if (aa.startsWith("api/")) {
+                                    //Process the request type (get, put, delete, post) and map to database queries
+                                } else {
+                                    //Return the file, return a 404 if it doesn't exist remember to set the correct MIME type
+                                    String output = "";
+                                    output = readFile(aa, Charset.defaultCharset());
+                                    exchange.getResponseSender().send(output);
+                                }
+
+
+//                                int index = aa.lastIndexOf("/");
+//                                String type = aa.substring(index, aa.length());
+
+//                                switch (type) {
+//                                    case "": {
+//                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
+//                                        String output = "";
+//                                        output = readFile("C:/Users/17255/Documents/GitHub/COMP315/index.html", Charset.defaultCharset());
+//                                        exchange.getResponseSender().send(output);
+//                                    }
+//                                    case "File": {
+//                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/JSON");
+//                                        String output = "";
+//                                        output = readFile("somefile", Charset.defaultCharset());
+//                                        exchange.getResponseSender().send(output);
+//                                    }
+//                                    case "Api": {
+////                                        some method to fetch data...
+//                                    }
+//                                 }
 
 
 
