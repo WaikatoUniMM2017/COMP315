@@ -7,6 +7,10 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import org.apache.commons.cli.*;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,18 +44,44 @@ public class Main{
                             public void handleRequest(final HttpServerExchange exchange) throws Exception {
                                 exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
 
-                                Connection connection = db.getConnection();
-                                final boolean execute = connection.createStatement().execute(
-                                        "CREATE TABLE IF NOT EXISTS example(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255)); INSERT INTO example(name) VALUES ('foo');");
-                                final ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM example;");
-                                String output = "";
-                                while (resultSet.next()){
-                                    output +=
-                                            resultSet.getString(1) +":"+ resultSet.getString(2) + "\r\n";
-                                }
+                                String aa = exchange.getQueryString();
 
+                                int index = aa.lastIndexOf("/");
+                                String type = aa.substring(index, aa.length());
+
+                                switch (type) {
+                                    case "": {
+                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
+                                        String output = "";
+                                        output = readFile("C:/Users/17255/Documents/GitHub/COMP315/index.html", Charset.defaultCharset());
+                                        exchange.getResponseSender().send(output);
+                                    }
+                                    case "File": {
+                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/JSON");
+                                        String output = "";
+                                        output = readFile("somefile", Charset.defaultCharset());
+                                        exchange.getResponseSender().send(output);
+                                    }
+                                    case "Api": {
+//                                        some method to fetch data...
+                                    }
+                                 }
+
+
+
+//                                Connection connection = db.getConnection();
+//                                final boolean execute = connection.createStatement().execute(
+//                                        "CREATE TABLE IF NOT EXISTS example(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255)); INSERT INTO example(name) VALUES ('foo');");
+//                                final ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM example;");
+//                                String output = "";
+//                                while (resultSet.next()){
+//                                    output +=
+//                                            resultSet.getString(1) +":"+ resultSet.getString(2) + "\r\n";
+//                                }
+                                String output = "";
+                                output = readFile("C:/Users/17255/Documents/GitHub/COMP315/index.html", Charset.defaultCharset());
                                 exchange.getResponseSender().send(output);
-                                connection.close();
+//                                connection.close();
                             }
                         }).build();
                 server.start();
@@ -62,6 +92,13 @@ public class Main{
             e.printStackTrace();
         }
 
+    }
+
+    static String readFile(String path, Charset encoding)
+            throws IOException
+    {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
     }
 
 }
