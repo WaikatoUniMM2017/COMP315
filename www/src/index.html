@@ -6,17 +6,19 @@
         <title>WUGS Tournament Creation page</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+		
         <link rel="manifest" href="site.webmanifest">
         <link rel="apple-touch-icon" href="WUGS.png">
         <!-- Place favicon.ico in the root directory -->
 		
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
          <link rel="stylesheet" href="css/datetime-local-polyfill.css">
- 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"</script>
- 		<script src="js/datetime-local-polyfille.min.js"</script>
+ 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+ 		<script src="js/doT.min.js"></script>
+ 		<script src="js/jquery.uriAnchor.js"></script>
+ 		<!-- <script src="js/datetime-local-polyfill.min.js"></script> -->
+ 		<script src="js/template.js"></script>
  		<script src="js/main.js"></script>
- 		
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
@@ -52,10 +54,13 @@
         </div>
 
         <div class="content">
+        	<section id= "sectionMain">
+			
+		</section>
             <h2 class="content-subhead">Step 1: Add Players</h2>
             <form>
 				*E-mail address   <input type="email" required/>  <br /> <br />
-				*Full Name  <input type="text" required <br /> <br />
+				*Full Name   <input type="text" required/> <br /> <br />
 			        <fieldset>
 			                <legend>*Membership status</legend>
 	                        <input type="radio" required id ="ms1" name="MStatus" value="Gold" />   Gold <br />
@@ -64,7 +69,7 @@
 	                        <input type="radio" required id ="ms4" name="MStatus" value="Free" />   Free<br />
 	                        <input type="radio" required id ="ms5" name="MStatus" value="Non-Member" />   Non-Member</> <br /> 
 			        </fieldset>
-		        <input type="search" placeholder="Team">	<br /> <br>		
+		        Team Name   <input type="search" />	<br /> <br>		
 				<input type="submit" value="Add"> <br /> <br />
 			</form>
 
@@ -76,15 +81,15 @@
 			</form>
 		   <h2 class="content-subhead">Step 3: New Tournament</h2>
 		            <form>
-						*Game title   <input type="text" required> <br /> <br />
+						*Game title   <input type="text" required /> <br /> <br />
 						<fieldset>
-							*Date and Time : from  <input type="datetime-local" required	<br /> <br />
-							*Date and Time : to  <input type="datetime-local" required> <br />	<br />
+							*Date and Time : from  <input type="datetime-local" required />	<br /> <br />
+							*Date and Time : to  <input type="datetime-local" required /> <br />	<br />
 					    </fieldset>	
-					    *Venue   <input type="text" required>	<br /> <br />
+					    *Venue   <input type="text" required />	<br /> <br />
 					    <textarea name="comment" form="usrform">Enter comment here...</textarea> <br /> <br />
-					    *Participated Teams   <input type="search" required>	<br /> <br />
-						<input type="submit" value="Set Bracket"> <br /> <br />
+					    *Participated Teams   <input type="search" required />	<br /> <br />
+						<input type="submit" value="Set Bracket" /> <br /> <br />
 					</form>
             
 
@@ -92,68 +97,77 @@
             <p>
             	<div class="pure-g">
 				    <div class="pure-u-1-12">
-				    <input type="button" id= "add" value="0" +> <br  />
-				    <input type= "button" id= "sub" value="1" -/>
+				    	<div>
+					    <input type="button" id= "add" value="0" +> <br  />
+					    <input type= "button" id= "sub" value="1" -/>
+				    	</div>
 				    </div>
 				    <div class="pure-u-1-3">
-				    	<select name="select" id ="Team1">
-								  <option value="value1">Value 1</option> 
-								  <option value="value2" selected>Value 2</option>
-								  <option value="value3">Value 3</option>
-								</select> <br /> <br />
+				    	<div>
+			    			<select  id ="Team1">
+							  <option value="value1">Value 1</option> 
+							  <option value="value2" selected>Value 2</option>
+							  <option value="value3">Value 3</option>
+							</select> <br /> <br />
 								
-								<select name="select" id ="Team2">
-								  <option value="value11">Value 1</option> 
-								  <option value="value22" selected>Value 2</option>
-								  <option value="value33">Value 3</option>
-								</select> <br /> <br />
+							<select " id ="Team2">
+							  <option value="value11">Value 1</option> 
+							  <option value="value22" selected>Value 2</option>
+							  <option value="value33">Value 3</option>
+							</select> <br /> <br />
 								
-								<select name="select" id ="Team3">
-								  <option value="value1">Value 1</option> 
-								  <option value="value2" selected>Value 2</option>
-								  <option value="value3">Value 3</option>
-								</select> <br /> <br />
-								
-									<select name="select" id ="Team4">
-								  <option value="value1">Value 1</option> 
-								  <option value="value2" selected>Value 2</option>
-								  <option value="value3">Value 3</option>
-								</select> <br /> <br />
+						</div>
+						
+						<div>
+							<select  id ="Team3">
+							  <option value="value1">Value 1</option> 
+							  <option value="value2" selected>Value 2</option>
+							  <option value="value3">Value 3</option>
+							</select> <br /> <br />
+							
+							<select id ="Team4">
+							  <option value="value1">Value 1</option> 
+							  <option value="value2" selected>Value 2</option>
+							  <option value="value3">Value 3</option>
+							</select> <br /> <br />
+						</div>
     				</div>
     				<div class="pure-u-1-12">
-    				<select name="select" id ="Team4">
-								  <option value="value1">Value 1</option> 
-								  <option value="value2" selected>Value 2</option>
-								  <option value="value3">Value 3</option>
-								</select> <br /> <br />
-								
-								<select name="select" id ="Team4">
-								  <option value="value1">Value 1</option> 
-								  <option value="value2" selected>Value 2</option>
-								  <option value="value3">Value 3</option>
-								</select> <br /> <br />
-								  </div> <!-- CREATE UPDATE DELETE DO THIS WHEN YOU GET BACK HOME  -->
+    					<div>
+							<select  id ="Team2">
+							  <option value="value1">Value 1</option> 
+							  <option value="value2" selected>Value 2</option>
+							  <option value="value3">Value 3</option>
+							</select> <br /> <br />
+							
+							<select  id ="Team4">
+							  <option value="value1">Value 1</option> 
+							  <option value="value2" selected>Value 2</option>
+							  <option value="value3">Value 3</option>
+							</select> <br /> <br />
+						</div>
+					</div> 
 </div>
   <input type="submit" value ="Confirm"> <br /> <br />
             <h2 class="content-subhead">Delete Tournaments</h2>  
 						<form>
-							*Delete <input type="Search" required="*Delete"> <br /> <br />
+							*Delete <input type="search" required /> <br /> <br />
 							<fieldset>
 			                <legend>At the same time, would you also want to:</legend>
-							<input type="checkbox" id ="del1" name="delstat" value="Delteams" /> Delete related teams <br />
-							<input type="checkbox" id ="del2" name="delstat" value="Deltandp" />  Delete related teams and players <br />
-							<input type="checkbox" id ="del3" name="delstat" value="notifyp" />   Notify players by E-mail <br /> <br />
+							<input type="checkbox" name="delstat" value="Delteams" /> Delete related teams <br />
+							<input type="checkbox" name="delstat" value="Deltandp" />  Delete related teams and players <br />
+							<input type="checkbox" name="delstat" value="notifyp" />   Notify players by E-mail <br /> <br />
 							</fieldset>
 							<input type="submit" value="Delete">	
 						</form>	
 						
 			<h2 class="content-subhead">Modify Tournament Detail</h2> 
-			*Search tournament <input type ="search" /> <br /> <br />
-			*Date and Time: from <input type="datetime-local" /> <br> <br>
-			*Date and Time: to <input type="datetime-local" /> <br /> <br />
-			*Venue <input type="text" /> <br /> <br>
+			*Search tournament <input type="search" required /> <br /> <br />
+			*Date and Time: from <input type="datetime-local" required /> <br> <br>
+			*Date and Time: to <input type="datetime-local" required /> <br /> <br />
+			*Venue <input type="text" required /> <br /> <br>
 			<textarea name="comment" form="usrform">Enter comment here...</textarea> <br /> <br>
-			*Participated Teams <input type="search"/> <br /> <br>
+			*Participated Teams <input type="search" required/> <br /> <br>
 			<input type="submit" value="Confirm" /> <br /> <br>
 			
 			
