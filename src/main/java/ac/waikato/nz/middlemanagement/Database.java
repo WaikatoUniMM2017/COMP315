@@ -12,9 +12,9 @@ import java.sql.SQLException;
  */
 public class Database {
     private static Database instance;
-    private static String connectionString = "jdbc:h2:/test";
-    private static String dbUsername = "sa";
-    private static String dbPassword = "sa";
+    private static String connectionString = "jdbc:h2:./database/data";
+    private static String dbUsername = "";
+    private static String dbPassword = "";
 
     private final JdbcConnectionPool cp;
 
