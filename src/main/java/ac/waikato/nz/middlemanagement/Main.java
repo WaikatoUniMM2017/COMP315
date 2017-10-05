@@ -93,8 +93,16 @@ public class Main{
                                             switch (tableType) {
 
                                                 case "player":
+                                                    if(exchange.getQueryParameters().containsKey("email")){
+                                                        String emailValue = exchange.getQueryParameters().get("email").element();
+                                                        String playerJsonContent = helper.getJsonString(String.format(Queries.SELECT_PLAYER, emailValue));
+                                                        exchange.getResponseSender().send(playerJsonContent);
+                                                    } else {
+                                                        exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_PLAYER_ALL));
 
-                                                    String emailValue = exchange.getQueryParameters().get("email").element();
+                                                    }
+
+
 
 
 //                                                    connection.createStatement().execute(String.format(Queries.UPDATE_TOURNAMENT,
@@ -115,17 +123,23 @@ public class Main{
 //                                                    jsonObject.add("data", array);
 //                                                    String jsonContent = jsonObject.toString();
 
-                                                    String playerJsonContent = helper.getJsonString(String.format(Queries.SELECT_PLAYER, emailValue));
-                                                    exchange.getResponseSender().send(playerJsonContent);
+
 
 
                                                     break;
 
                                                 case "team":
 
-                                                    String teamName = exchange.getQueryParameters().get("tname").toString();
-                                                    String teamJsonContent = helper.getJsonString(String.format(Queries.SELECT_TEAM, teamName));
-                                                    exchange.getResponseSender().send(teamJsonContent);
+
+
+                                                    if(exchange.getQueryParameters().containsKey("tname")){
+                                                        String teamName = exchange.getQueryParameters().get("tname").toString();
+                                                        String teamJsonContent = helper.getJsonString(String.format(Queries.SELECT_TEAM, teamName));
+                                                        exchange.getResponseSender().send(teamJsonContent);
+                                                    } else {
+                                                        exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_TEAM_ALL));
+
+                                                    }
 
                                                     break;
 
@@ -138,15 +152,22 @@ public class Main{
 
                                                     break;
 
+                                                case "type":
+
+                                                        exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_TYPE_ALL));
+                                                        break;
+
+
+
                                             }
                                             break;
 
 
-                                        case "POST":
+                                        case "PUT"://update
 
                                             break;
 
-                                        case "PUT":
+                                        case "POST"://Insert
 
                                             switch (tableType) {
 
@@ -155,7 +176,9 @@ public class Main{
                                                     String lnameValue = exchange.getQueryParameters().get("lname").element();
                                                     String fnameValue = exchange.getQueryParameters().get("fname").element();
 
-                                                    connection.createStatement().execute(String.format(Queries.INSERT_PLAYER, emailValue, fnameValue, lnameValue));
+                                                    String putPlayer = helper.getJsonString(String.format(Queries.INSERT_PLAYER, emailValue, fnameValue, lnameValue));
+
+
 
 
                                                     break;

@@ -8,9 +8,15 @@ public class Queries {
     // language=H2
     public static final String SELECT_PLAYER = "SELECT * FROM PLAYER WHERE EMAIL = '%s';";
     // language=H2
+    public static final String SELECT_PLAYER_ALL = "SELECT * FROM PLAYER;";
+    // language=H2
     public static final String SELECT_TEAM = "SELECT * FROM TEAM WHERE TNAME = '%s';";
     // language=H2
+    public static final String SELECT_TEAM_ALL = "SELECT * FROM TEAM;";
+    // language=H2
     public static final String SELECT_TOURNAMENT = "SELECT * FROM TOURNAMENT WHERE NAME = '%s';";
+    // language=H2
+    public static final String SELECT_TYPE_ALL = "SELECT * FROM TYPE;";
     // language=H2
     public static final String INSERT_PLAYER = "INSERT INTO PLAYER (EMAIL,FNAME,LNAME) VALUES (EMAIL='%s',FNAME='%s',LNAME='%s');";
     // language=H2
