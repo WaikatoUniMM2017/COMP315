@@ -3,6 +3,9 @@ $(document).ready(function(){
 		// $( "#div.foo" ).click(function() {
   // $( "span", this ).addClass( "bar" );
 // });
+$( ".pure-menu-link").click(function() {
+	updatePage(this.getAttribute("value"))
+});
 console.info("READY");
 });
 
@@ -12,6 +15,19 @@ function onHashChange(e) {
     console.debug(hash);
 
     switch (hash.page){
+    	case 'addPlayer':
+    	$.ajax({
+	  url: '130.217.185.48:8080/api/type',
+	  // data: data,
+	  success: function (argument) {
+	  	console.log(argument);
+	  },
+	  error:function (argument) {
+	  	console.log(argument);
+	  },
+	  type: 'GET'
+});
+    	break;
         default:
             getSection().html(
                 templates[hash.page](hash)+"<!--"+hash.page+"-->"
