@@ -67,7 +67,7 @@ public class Main{
                                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
                                     String output = "";
                                     //Needs to be a relative path
-                                    output = readFile("index.html", Charset.defaultCharset());
+                                    output = readFile("www/index.html", Charset.defaultCharset());
                                     exchange.getResponseSender().send(output);
                                 } else if (requestURI.startsWith("/api/")) {
                                     //Process the request type (get, put, delete, post) and map to database queries
@@ -238,7 +238,7 @@ public class Main{
                                     int index = requestURI.lastIndexOf(".");
                                     String type = requestURI.substring(index, requestURI.length());
                                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/" + type);
-                                    String output = readFile(requestURI, Charset.defaultCharset());
+                                    String output = readFile("www/"+requestURI, Charset.defaultCharset());
                                     exchange.getResponseSender().send(output);
                                 }
 
