@@ -22,7 +22,9 @@ public class Queries {
     // language=H2
     public static final String INSERT_TEAM = "INSERT INTO TEAM (tname) VALUES (TNAME = '%s');";
     // language=H2
-    public static final String INSERT_TOURNAMENT = "INSERT INTO TEAM (tname) VALUES (TNAME = '%s');";
+    public static final String INSERT_TOURNAMENT = "INSERT INTO TOURNAMENT (NAME, VENUE, COMMENTS, TSTART, TEND) VALUES (NAME='%s', VENUE='%s', COMMENTS='%s', TSTART='%d', TEND='%d');";
+    // language=H2
+    public static final String INSERT_BRACKET = "INSERT INTO BRACKET (ROUND) VALUES('');";
     /*
     INSERT INTO PLAYER (EMAIL,FNAME,LNAME) VALUES ('eros.nec.tellus@Nullam.com','Stone','Burnett');
     INSERT INTO Team(tname) VALUES ('Lotlux');

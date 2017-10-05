@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class Main{
-    public static void main(String [] args){
+public class Main {
+    public static void main(String[] args) {
 
         Helper helper = new Helper();
         CommandLineParser parser = new DefaultParser();
@@ -38,19 +38,19 @@ public class Main{
         try {
 
             Database db = Database.getDatabase();
-            CommandLine cmd = parser.parse( options, args);
-            if(cmd.hasOption("help")){
-                formatter.printHelp( "WUGS", options );
-            } else if(cmd.hasOption("script")){
+            CommandLine cmd = parser.parse(options, args);
+            if (cmd.hasOption("help")) {
+                formatter.printHelp("WUGS", options);
+            } else if (cmd.hasOption("script")) {
 
                 Connection connection = db.getConnection();
-                String statement = "RUNSCRIPT FROM '" + cmd.getOptionValue("script") +"';";
+                String statement = "RUNSCRIPT FROM '" + cmd.getOptionValue("script") + "';";
                 final boolean execute = connection.createStatement().execute(statement);
                 connection.close();
 
             } else {
                 Undertow server = Undertow.builder()
-                        .addHttpListener(8080, "localhost")
+                        .addHttpListener(8080, "0.0.0.0")
                         .setHandler(new HttpHandler() {
                             @Override
                             public void handleRequest(final HttpServerExchange exchange) throws Exception {
@@ -62,21 +62,20 @@ public class Main{
                                 String requestURI = exchange.getRequestURI();
 
 
-                                if (requestURI == "") {
+                                if (requestURI.equals("&#47;") || requestURI.equals("/") || requestURI.equals("")) {
                                     //Return index.html
                                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html");
                                     String output = "";
                                     //Needs to be a relative path
-                                    output = readFile("www/index.html", Charset.defaultCharset());
+                                    output = readFile("www/src/index.html", Charset.defaultCharset());
                                     exchange.getResponseSender().send(output);
                                 } else if (requestURI.startsWith("/api/")) {
                                     //Process the request type (get, put, delete, post) and map to database queries
                                     String out = "";
 
-                                    for (Map.Entry<String, Deque<String>> set : exchange.getQueryParameters().entrySet()){
+                                    for (Map.Entry<String, Deque<String>> set : exchange.getQueryParameters().entrySet()) {
                                         out += set.getKey() + "：" + set.getValue().toString();
                                     }
-
 
 
 //                                    exchange.getResponseSender().send(out);
@@ -93,7 +92,7 @@ public class Main{
                                             switch (tableType) {
 
                                                 case "player":
-                                                    if(exchange.getQueryParameters().containsKey("email")){
+                                                    if (exchange.getQueryParameters().containsKey("email")) {
                                                         String emailValue = exchange.getQueryParameters().get("email").element();
                                                         String playerJsonContent = helper.getJsonString(String.format(Queries.SELECT_PLAYER, emailValue));
                                                         exchange.getResponseSender().send(playerJsonContent);
@@ -101,8 +100,6 @@ public class Main{
                                                         exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_PLAYER_ALL));
 
                                                     }
-
-
 
 
 //                                                    connection.createStatement().execute(String.format(Queries.UPDATE_TOURNAMENT,
@@ -124,15 +121,12 @@ public class Main{
 //                                                    String jsonContent = jsonObject.toString();
 
 
-
-
                                                     break;
 
                                                 case "team":
 
 
-
-                                                    if(exchange.getQueryParameters().containsKey("tname")){
+                                                    if (exchange.getQueryParameters().containsKey("tname")) {
                                                         String teamName = exchange.getQueryParameters().get("tname").toString();
                                                         String teamJsonContent = helper.getJsonString(String.format(Queries.SELECT_TEAM, teamName));
                                                         exchange.getResponseSender().send(teamJsonContent);
@@ -154,9 +148,8 @@ public class Main{
 
                                                 case "type":
 
-                                                        exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_TYPE_ALL));
-                                                        break;
-
+                                                    exchange.getResponseSender().send(helper.getJsonString(Queries.SELECT_TYPE_ALL));
+                                                    break;
 
 
                                             }
@@ -177,8 +170,6 @@ public class Main{
                                                     String fnameValue = exchange.getQueryParameters().get("fname").element();
 
                                                     String putPlayer = helper.getJsonString(String.format(Queries.INSERT_PLAYER, emailValue, fnameValue, lnameValue));
-
-
 
 
                                                     break;
@@ -232,13 +223,17 @@ public class Main{
                                     }
 
 
-
                                 } else {
                                     //Return the file, return a 404 if it doesn't exist remember to set the correct MIME type
                                     int index = requestURI.lastIndexOf(".");
-                                    String type = requestURI.substring(index, requestURI.length());
+                                    String type = requestURI.substring(index + 1);
                                     exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/" + type);
-                                    String output = readFile("www/"+requestURI, Charset.defaultCharset());
+                                    if (type.equals("png")) {
+                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/" + type);
+                                    } else if (type.equals("jpg")) {
+                                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "image/" + type);
+                                    }
+                                    String output = readFile("www/src/" + requestURI, Charset.defaultCharset());
                                     exchange.getResponseSender().send(output);
                                 }
 
@@ -273,8 +268,7 @@ public class Main{
     }
 
     static String readFile(String path, Charset encoding)
-            throws IOException
-    {
+            throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
     }
@@ -296,7 +290,7 @@ public class Main{
 //            jsonArray.add(obj);
 //        }
 //        return jsonArray;
-    }
+}
 
 
 
