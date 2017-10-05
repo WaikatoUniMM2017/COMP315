@@ -1,12 +1,16 @@
 package ac.waikato.nz.middlemanagement;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
 import org.apache.commons.cli.*;
+import com.google.gson.JsonArray;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -19,8 +23,11 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
 
+
 public class Main{
     public static void main(String [] args){
+
+        Helper helper = new Helper();
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
         HelpFormatter formatter = new HelpFormatter();
@@ -48,7 +55,7 @@ public class Main{
                             @Override
                             public void handleRequest(final HttpServerExchange exchange) throws Exception {
                                 Database db = Database.getDatabase();
-                                Connection connection = db.getConnection();
+//                                Connection connection = db.getConnection();
 
                                 exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
 
@@ -72,14 +79,13 @@ public class Main{
 
 
 
-                                    exchange.getResponseSender().send(out);
+//                                    exchange.getResponseSender().send(out);
 
                                     HttpString requestMethod = exchange.getRequestMethod();
                                     String requestMethodString = requestMethod.toString();
 
                                     int startIndex = requestURI.lastIndexOf("/");
-                                    int endIndex = requestURI.lastIndexOf("?");
-                                    String tableType = requestURI.substring(startIndex, endIndex);
+                                    String tableType = requestURI.substring(startIndex + 1, requestURI.length());
 
                                     switch (requestMethodString) {
                                         case "GET":
@@ -91,25 +97,43 @@ public class Main{
                                                     String emailValue = exchange.getQueryParameters().get("email").element();
 
 
-//                                                    final ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM Team;");
-//                                                    String output = "";
-//                                                    while (resultSet.next()){
-//                                                        output +=
-//                                                                resultSet.getString(1) +":"+ resultSet.getString(2) + "\r\n";
-//                                                    }
+//                                                    connection.createStatement().execute(String.format(Queries.UPDATE_TOURNAMENT,
+//                                                            tournamentName, venue, comments, tStart, tEnd));
+
+//                                                    final ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM PLAYER WHERE Email =" + emailValue + ";");
+//                                                    final ResultSet resultSet = connection.createStatement().executeQuery(String.format(Queries.SELECT_PLAYER, emailValue));
+//
+////                                                    String output = "";
+////                                                    while (resultSet.next()){
+////                                                        output +=
+////                                                                resultSet.getString(1) +":"+ resultSet.getString(2) + "\r\n";
+////                                                    }
+//
+//                                                    JsonObject jsonObject = new JsonObject();
+//                                                    JsonArray array = convertToJSON(resultSet);
+//
+//                                                    jsonObject.add("data", array);
+//                                                    String jsonContent = jsonObject.toString();
+
+                                                    String playerJsonContent = helper.getJsonString(String.format(Queries.SELECT_PLAYER, emailValue));
+                                                    exchange.getResponseSender().send(playerJsonContent);
 
 
                                                     break;
 
                                                 case "team":
 
-                                                    String teamName = exchange.getQueryParameters().get("name").toString();
+                                                    String teamName = exchange.getQueryParameters().get("tname").toString();
+                                                    String teamJsonContent = helper.getJsonString(String.format(Queries.SELECT_TEAM, teamName));
+                                                    exchange.getResponseSender().send(teamJsonContent);
 
                                                     break;
 
                                                 case "tournament":
 
                                                     String tournamentName = exchange.getQueryParameters().get("name").toString();
+                                                    String tournamentJsonContent = helper.getJsonString(String.format(Queries.SELECT_TOURNAMENT, tournamentName));
+                                                    exchange.getResponseSender().send(tournamentJsonContent);
 
 
                                                     break;
@@ -131,6 +155,9 @@ public class Main{
                                                     String lnameValue = exchange.getQueryParameters().get("lname").element();
                                                     String fnameValue = exchange.getQueryParameters().get("fname").element();
 
+                                                    connection.createStatement().execute(String.format(Queries.INSERT_PLAYER, emailValue, fnameValue, lnameValue));
+
+
                                                     break;
 
                                                 case "team":
@@ -147,9 +174,8 @@ public class Main{
                                                     String tStart = exchange.getQueryParameters().get("tstart").toString();
                                                     String tEnd = exchange.getQueryParameters().get("tend").toString();
 
-//                                                    Is the id also come from the frontend?
-                                                    connection.createStatement().execute(String.format(Queries.UPDATE_TOURNAMENT,
-                                                            tournamentName, venue, comments, tStart, tEnd));
+//                                                    connection.createStatement().execute(String.format(Queries.UPDATE_TOURNAMENT,
+//                                                            tournamentName, venue, comments, tStart, tEnd));
 
                                                     break;
                                             }
@@ -209,7 +235,7 @@ public class Main{
                                 String output = "";
                                 output = readFile("C:/Users/17255/Documents/GitHub/COMP315/index.html", Charset.defaultCharset());
                                 exchange.getResponseSender().send(output);
-                                connection.close();
+//                                connection.close();
                             }
                         }).build();
                 server.start();
@@ -230,4 +256,28 @@ public class Main{
         return new String(encoded, encoding);
     }
 
-}
+
+//    public static JsonArray convertToJSON(ResultSet resultSet)
+//            throws Exception {
+//        JsonArray jsonArray = new JsonArray();
+//        Gson gson = new Gson();
+//        while (resultSet.next()) {
+//            int total_rows = resultSet.getMetaData().getColumnCount();
+//            JsonObject obj = new JsonObject();
+//
+//            for (int i = 0; i < total_rows; i++) {
+//                obj.add(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), gson.toJsonTree( resultSet.getObject(i + 1)));
+////                obj.
+//
+//            }
+//            jsonArray.add(obj);
+//        }
+//        return jsonArray;
+    }
+
+
+
+
+
+
+

@@ -5,6 +5,18 @@ public class Queries {
     public static final String UPDATE_TOURNAMENT = "UPDATE TOURNAMENT SET NAME='%s', VENUE='%s', COMMENTS='%s', TSTART='%t', TEND='%t' WHERE ID='%d';";
     // language=H2
     public static final String UPDATE_BRACKET = "UPDATE BRACKET SET ROUND='%d', WINNERID='%d' WHERE ID='%d';";
+    // language=H2
+    public static final String SELECT_PLAYER = "SELECT * FROM PLAYER WHERE EMAIL = '%s';";
+    // language=H2
+    public static final String SELECT_TEAM = "SELECT * FROM TEAM WHERE TNAME = '%s';";
+    // language=H2
+    public static final String SELECT_TOURNAMENT = "SELECT * FROM TOURNAMENT WHERE NAME = '%s';";
+    // language=H2
+    public static final String INSERT_PLAYER = "INSERT INTO PLAYER (EMAIL,FNAME,LNAME) VALUES (EMAIL='%s',FNAME='%s',LNAME='%s');";
+    // language=H2
+    public static final String INSERT_TEAM = "INSERT INTO TEAM (tname) VALUES (TNAME = '%s');";
+    // language=H2
+    public static final String INSERT_TOURNAMENT = "INSERT INTO TEAM (tname) VALUES (TNAME = '%s');";
     /*
     INSERT INTO PLAYER (EMAIL,FNAME,LNAME) VALUES ('eros.nec.tellus@Nullam.com','Stone','Burnett');
     INSERT INTO Team(tname) VALUES ('Lotlux');
