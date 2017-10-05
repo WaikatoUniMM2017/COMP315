@@ -176,7 +176,8 @@ public class Main {
 
                                                 case "team":
 
-                                                    String teamName = exchange.getQueryParameters().get("name").toString();
+                                                    String name = exchange.getQueryParameters().get("name").element();
+                                                    String teamName = helper.getJsonString(String.format(Queries.INSERT_TEAM, name));
 
                                                     break;
 

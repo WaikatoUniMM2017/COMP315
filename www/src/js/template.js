@@ -1,9 +1,10 @@
-var templates={};
+var templates = {};
+var bindings = {};
 
-templates["addPlayer"]=doT.template(
-`<form class="pure-form pure-form-aligned">
-<input type="hidden" value={{=it.id}}"}/>
-<legend> Add Players </ legend>
+templates["addPlayer"] = doT.template(
+    `<form class="pure-form pure-form-aligned" id="addPlayer">
+<input type="hidden" value="{{=it.id}}"/>
+<legend> Add Players </legend>
  <fieldset>
         <div class="pure-control-group">
         <label for="name">*Email Address</label>
@@ -12,31 +13,34 @@ templates["addPlayer"]=doT.template(
 		</div>
 		<div class="pure-control-group">
 			<label for="name">*Full Name</label>
-			<input type="text" name"fName" required/>
+			<input type="text" name=fName" required/>
 			<span class="pure-form-message-inline">   This is a required field.</span>
 		</div>
 		<div class="pure-control-group">
-		<legend> Membership Status </legend>
-			{{~it.type.split(',') :value:index}}
+		<legend> Membership Status </legend>		    
+			{{ for (var value in it.accountTypes) { }}
 			<div class="pure-control-group">
-				<input type="radio" name="memRadio"{{=value}}/> {{=value}} 
+				<input type="radio" name="memRadio" value='{{=it.accountTypes[value].id}}'/> {{=it.accountTypes[value].name}} 
 			</div>
-			{{~}}
+			{{}}}
+			
 			<span class="pure-form-message-inline">   This is a required field.</span>
-		</div>
-		<div class="pure-control-group">
-			<label for="name">Team Name</label>
-			<input type="search" name ="teamName"/>
-		</div>
+		</div>		
 		<div class="pure-control-group">
 			<label><input class="pure-button pure-button-primary" type="submit" value="Add"></label>
 		</div>
 	</fieldset>
 	</form>`
-	);
+);
+bindings["addPlayer"] = function () {
+    $("#addPlayer").submit(function (e) {
+        e.preventDefault();
+        window.alert("OK");
 
-templates["addTeam"]=doT.template(
-`<form class="pure-form pure-form-aligned">
+    });
+};
+templates["addTeam"] = doT.template(
+    `<form class="pure-form pure-form-aligned">
 <input type="hidden" value={{=it.id}}"}/>
 <legend> Add Teams </legend>
 	<fieldset>
@@ -47,18 +51,45 @@ templates["addTeam"]=doT.template(
 		</div>
 		<div class="pure-control-group">
 			<label for="name">*Team Member</label>
-			 <input type="search" name="teamMember required />
+			 <input type="search" name="teamMember" required />
 			 <span class="pure-form-message-inline">   This is a required field.</span>
 		</div>
+		<div>
+		<select name="select" id="selectTeamMember"> <!--Supplement an id here instead of using 'name'-->
+		{{~it.players :value:index}}
+             <option value="{{=value}}">{{=value}}</option>
+        {{~}}          
+        </select>
+        <button type="button" id="addTeamMember" class="pure-button pure-button-primary">Add Team Member</button>
+		</div>
 		<div class="pure-control-group">
-			 <label><input class="pure-button pure-button-primary" type="submit" value="Add" /></label>
+		{{~it.addedPlayers :value:index}}
+             <input type="search" name="teamMember" value="{{=value}}" disabled required />
+        {{~}}			
+			 
+		</div>
+		
+		
+		<div class="pure-control-group">
+			 <label><input class="pure-button pure-button-primary" type="submit" value="Add Team" /></label>
 			 </div>
 		</fieldset>
 	</form>`
-	);
+);
 
-templates["newTourn"]=doT.template(
-`<form class="pure-form pure-form-aligned">
+bindings["addTeam"] = function () {
+    $("#addTeamMember").click(function (e) {
+        e.preventDefault();
+        tm = $("#selectTeamMember").val();
+        addedPlayers.push(tm);
+        console.log(tm);
+        triggerUpdate();
+    });
+};
+
+
+templates["newTourn"] = doT.template(
+    `<form class="pure-form pure-form-aligned">
 <input type="hidden" value={{=it.id}}"}/>
 <legend> New Tournament </legend>
 	<fieldset>
@@ -88,19 +119,23 @@ templates["newTourn"]=doT.template(
 		</div>
 		 <div class="pure-control-group">
 		 <label for="name">*Participated Teams</label>
-		 <input type="search" name=participateTeams" required />
+		 <select name="select" id="selectTeamMember" multiple="true"> <!--Supplement an id here instead of using 'name'-->
+            {{~it.teams :value:index}}
+                 <option value="{{=value}}">{{=value}}</option>
+            {{~}}          
+        </select>
 		 <span class="pure-form-message-inline">   This is a required field.</span>
 		</div>
 		<div class="pure-control-group">
-			<label><input class="pure-button pure-button-primary" type="submit" value="Set Bracket" /></label>
+			<label><input class="pure-button pure-button-primary" type="submit" value="New Tournament" /></label>
 			 </div>
 		</fieldset>
 	</form>`
-	);
+);
 
 
-templates["delTourn"]=doT.template(
-`<form class="pure-form pure-form-aligned">
+templates["delTourn"] = doT.template(
+    `<form class="pure-form pure-form-aligned">
 <input type="hidden" value={{=it.id}}"}/>
 <legend> Delete Tournament </legend>
 	<fieldset>
@@ -133,8 +168,8 @@ templates["delTourn"]=doT.template(
 );
 
 
-templates["modTourn"]=doT.template(
-`<form class="pure-form pure-form-aligned">
+templates["modTourn"] = doT.template(
+    `<form class="pure-form pure-form-aligned">
 <input type="hidden" value={{=it.id}}"}/>
 	<legend> Modify Tournament </legend>
 	<fieldset>
@@ -177,10 +212,47 @@ templates["modTourn"]=doT.template(
 			 </div>
 		</fieldset>
 	</form>`
-
 );
 
 
+templates["modTourn"] = doT.template(`{{ for(var prop in it.rounds) { }}
+    <div class="pure-u-1-6 bracket" >
+        {{ for(var num = 0; num < it.rounds[prop]; num++) { }}
+            <div>
+                <p>
+                    <select>
+	                        <option>{{=it.teams[num]}}</option>
+	                        <option>{{=it.teams[num+1]}}</option>
+                        </select>
+                        </br>
+                        <select>
+	                        <option>{{=it.teams[num+1]}}</option>
+	                        <option>{{=it.teams[num]}}</option>
+                    </select>
+				</p>
+            </div>
+        {{ } }}
+    </div>    
+{{ } }}
+<div class="pure-u-1-4 bracket" >
+        <input type="text" placeholder="WINNER!">
+    </div>`);
 
 
+templates["calendar"] = doT.template(`
+Date: <input type="date" id="calenderDate" value="{{=it.date.toISOString().slice(0,10)}}"/> <button type="button" id="calenderButton">Submit</button> </br>
+{{~getDaysInMonth(it.date.getDay(), it.date.getYear()+1900) :value:index}}
+	<div class="pure-u-1-6 calenderBox">{{=value.toDateString()}}</div>
+{{~}}
+`);
+
+
+bindings["calendar"] = function () {
+    $("#calenderButton").click(function (e) {
+        e.preventDefault();
+        date = new Date($("#calenderDate").val());
+        console.log(date);
+        updateData("date", date);
+    });
+};
 
