@@ -241,7 +241,7 @@ templates["modTourn"] = doT.template(`{{ for(var prop in it.rounds) { }}
 
 templates["calendar"] = doT.template(`
 Date: <input type="date" id="calenderDate" value="{{=it.date.toISOString().slice(0,10)}}"/> <button type="button" id="calenderButton">Submit</button> </br>
-{{~getDaysInMonth(it.date.getDay(), it.date.getYear()+1900) :value:index}}
+{{~getDaysInMonth(it.date.getMonth(), it.date.getYear()+1900) :value:index}}
 	<div class="pure-u-1-6 calenderBox">{{=value.toDateString()}}</div>
 {{~}}
 `);
